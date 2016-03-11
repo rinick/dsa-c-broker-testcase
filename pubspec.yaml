@@ -1,4 +1,4 @@
-name: dsa-c-broker-testcase
+name: dsa_c_broker_testcase
 description: 
 dependencies:
   dslink: any
