@@ -7,16 +7,16 @@ import 'dart:async';
 
 
 main(List<String> args) {
-
+  var node;
   String brokerUrl = 'localhost:8100/conn';
   {
     LinkProvider link = new LinkProvider(
         ['-b', brokerUrl, '--log', 'finest'], 'resp1-',
         isResponder:true);
     
-    var node = link.provider.getOrCreateNode('/node', true);
+    node = link.provider.getOrCreateNode('/node', true);
     node.configs[r'$type'] = 'string';
-    node.updateValue("123");
+    node.updateValue("v1");
     link.connect();
   }
   
@@ -25,10 +25,13 @@ main(List<String> args) {
         ['-b', brokerUrl, '--log', 'finest'], 'req1-',
          isRequester:true);
     link.connect();
-    link.onRequesterReady.then((req) {
+    link.onRequesterReady.then((req) async{
       var listener = req.subscribe('/downstream/resp1/node',(update){
-        print('update received: ${update.value}, now ctrl+C to kill the process');
+        print('update received: ${update.value}');
       });
+      await (new Future.delayed(new Duration(seconds:1)));
+      node.updateValue("v2");
+      node.updateValue("v3");
     });
   }
 }
