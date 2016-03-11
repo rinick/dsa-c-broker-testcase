@@ -16,7 +16,7 @@ main(List<String> args) {
     
     var node = link.provider.getOrCreateNode('/node', true);
     node.configs[r'$type'] = 'string';
-    node.updateValue("asd");
+    node.updateValue("123");
     link.connect();
   }
   
@@ -27,7 +27,7 @@ main(List<String> args) {
     link.connect();
     link.onRequesterReady.then((req) async{
       var listener = req.subscribe('/downstream/resp1/node',(update){
-        print('update received: ${update.value}');
+        print('update received: ${update.value}, now ctrl+C to kill the process');
       });
     });
   }
